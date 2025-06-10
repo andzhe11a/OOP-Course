@@ -3,10 +3,6 @@
 
 template <typename T>
 class Average : public MathExpression<T> {
-private:
-    MathExpression<T>* expressions[10];
-    size_t count;
-
 public:
     Average();
     ~Average() override;
@@ -14,4 +10,8 @@ public:
 
     T value() const override;
     void print() const override;
+
+private:
+    MathExpression<T>* expressions[10];
+    size_t count;
 };
