@@ -30,11 +30,11 @@ Phone::Phone(const Phone& other) {
 
 Phone& Phone::operator=(const Phone& other) {
     if (this != &other) {
-        freeDyn();
-        copyDyn(other);
-        price = other.price;
+        Phone temp(other);
+        std::swap(model, temp.model);
+        std::swap(brand, temp.brand);
+        std::swap(price, temp.price);
     }
-
     return *this;
 }
 
