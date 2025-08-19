@@ -10,7 +10,7 @@ void Phone::copyDyn(const Phone& other) {
     strcpy(brand, other.brand);
 }
 
-void Phone::freeDyn() const {
+void Phone::freeDyn() {
     delete[] model;
     delete[] brand;
 }
