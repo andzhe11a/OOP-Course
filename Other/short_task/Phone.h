@@ -21,5 +21,5 @@ protected:
 
 private:
     void copyDyn(const Phone& other);
-    void freeDyn() const;
+    void freeDyn();
 };
