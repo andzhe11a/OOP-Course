@@ -17,5 +17,5 @@ private:
     unsigned memory = 0;
 
     void copyDynS(const Smartphone& other);
-    void freeDynS() const;
+    void freeDynS();
 };
