@@ -7,7 +7,7 @@ void Smartphone::copyDynS(const Smartphone& other) {
     strcpy(os, other.os);
 }
 
-void Smartphone::freeDynS() const {
+void Smartphone::freeDynS() {
     delete[] os;
 }
 
@@ -25,9 +25,12 @@ Smartphone::Smartphone(const Smartphone& other)
 
 Smartphone& Smartphone::operator=(const Smartphone& other) {
     if (this != &other) {
-        copyDynS(other);
-        freeDynS();
-        memory = other.memory;
+        Smartphone temp(other);
+        std::swap(model, temp.model);
+        std::swap(brand, temp.brand);
+        std::swap(price, temp.price);
+        std::swap(os, temp.os);
+        std::swap(memory, temp.memory);
     }
     return *this;
 }
