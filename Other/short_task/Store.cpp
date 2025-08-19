@@ -3,12 +3,7 @@
 #include "Store.h"
 #include "Phone.h"
 
-void Store::copy(const Store& other) {
-    initialBudget = other.initialBudget;
-    currentBudget = other.currentBudget;
-    size = other.size;
-    capacity = other.capacity;
-
+void Store::copyDynSt(const Store& other) {
     phones = new Phone*[capacity];
     for (size_t i = 0; i < size; ++i) {
         phones[i] = other.phones[i]->clone();
@@ -34,22 +29,31 @@ void Store::resize() {
     phones = newPhones;
 }
 
-Store::Store(double initialBudget) {
-    this->initialBudget = initialBudget;
-    this->currentBudget = initialBudget;
-    this->size = 0;
-    this->capacity = 8;
-    this->phones = new Phone*[this->capacity];
+Store::Store(double initialBudget)
+    : initialBudget(initialBudget),
+      currentBudget(initialBudget),
+      size(0),
+      capacity(8)
+{
+    phones = new Phone*[capacity];
 }
 
 Store::Store(const Store& other) {
-    copy(other);
+    initialBudget = other.initialBudget;
+    currentBudget = other.currentBudget;
+    size = other.size;
+    capacity = other.capacity;
+    copyDynSt(other);
 }
 
 Store& Store::operator=(const Store& other) {
     if (this != &other) {
-        free();
-        copy(other);
+        Store temp(other);
+        std::swap(initialBudget, temp.initialBudget);
+        std::swap(currentBudget, temp.currentBudget);
+        std::swap(phones, temp.phones);
+        std::swap(size, temp.size);
+        std::swap(capacity, temp.capacity);
     }
     return *this;
 }
