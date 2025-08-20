@@ -38,11 +38,12 @@ Store::Store(double initialBudget)
     phones = new Phone*[capacity];
 }
 
-Store::Store(const Store& other) {
-    initialBudget = other.initialBudget;
-    currentBudget = other.currentBudget;
-    size = other.size;
-    capacity = other.capacity;
+Store::Store(const Store& other)
+    : initialBudget(other.initialBudget), 
+      currentBudget(other.currentBudget),
+      size(other.size),
+      capacity(other.capacity)
+{
     copyDynSt(other);
 }
 
