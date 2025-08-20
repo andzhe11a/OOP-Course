@@ -23,8 +23,8 @@ private:
     size_t size = 0;
     size_t capacity = 0;
 
-    void freeDyn();
-    void copyDyn(const Store& other);
+    void freeDynSt();
+    void copyDynSt(const Store& other);
 
     void resize();
 };
