@@ -8,7 +8,7 @@ public:
     Store& operator=(const Store& other);
     ~Store() noexcept;
 
-    bool addPhone(Phone* phoneToAdd);
+    bool addPhone(const Phone& phoneToAdd);
     bool removePhone(const char* model, const char* brand);
 
     void printStatus() const;
