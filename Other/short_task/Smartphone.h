@@ -12,6 +12,8 @@ public:
     void print() const override;
     Phone* clone() const override;
 
+    void swap(Smartphone& other) noexcept;
+
 private:
     char* os = nullptr;
     unsigned memory = 0;
