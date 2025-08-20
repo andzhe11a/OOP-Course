@@ -10,7 +10,7 @@ void Store::copyDynSt(const Store& other) {
     }
 }
 
-void Store::free() const {
+void Store::free() {
     for (size_t i = 0; i < size; ++i) {
         delete phones[i];
     }
@@ -63,8 +63,8 @@ Store::~Store() noexcept {
     free();
 }
 
-bool Store::addPhone(Phone* phoneToAdd) {
-    double price = phoneToAdd->getPrice();
+bool Store::addPhone(const Phone& phoneToAdd) {
+    double price = phoneToAdd.getPrice();
 
     if (currentBudget >= price) {
         if (size == capacity) {
@@ -72,16 +72,15 @@ bool Store::addPhone(Phone* phoneToAdd) {
         }
 
         currentBudget -= price;
-        phones[size] = phoneToAdd;
+        phones[size] = phoneToAdd.clone(); 
         size++;
 
         std::cout << "Successfully added: ";
-        phoneToAdd->print();
+        phoneToAdd.print();
         return true;
     } else {
         std::cout << "Not enough budget to add: ";
-        phoneToAdd->print();
-        delete phoneToAdd;
+        phoneToAdd.print();
         return false;
     }
 }
