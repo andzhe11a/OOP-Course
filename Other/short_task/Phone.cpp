@@ -28,12 +28,17 @@ Phone::Phone(const Phone& other) {
     price = other.price;
 }
 
+void Phone::swap(Phone& other) noexcept {
+    using std::swap;
+    swap(model, other.model);
+    swap(brand, other.brand);
+    swap(price, other.price);
+}
+
 Phone& Phone::operator=(const Phone& other) {
     if (this != &other) {
         Phone temp(other);
-        std::swap(model, temp.model);
-        std::swap(brand, temp.brand);
-        std::swap(price, temp.price);
+        swap(temp);
     }
     return *this;
 }
