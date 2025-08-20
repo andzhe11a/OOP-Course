@@ -23,9 +23,8 @@ Phone::Phone(const char* model, const char* brand, double price) : price(price) 
     strcpy(this->brand, brand);
 }
 
-Phone::Phone(const Phone& other) {
+Phone::Phone(const Phone& other) : price(other.price) {
     copyDyn(other);
-    price = other.price;
 }
 
 void Phone::swap(Phone& other) noexcept {
