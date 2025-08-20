@@ -10,7 +10,7 @@ void Store::copyDynSt(const Store& other) {
     }
 }
 
-void Store::free() {
+void Store::freeDynSt() {
     for (size_t i = 0; i < size; ++i) {
         delete phones[i];
     }
