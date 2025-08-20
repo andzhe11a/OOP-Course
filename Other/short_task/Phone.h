@@ -14,12 +14,13 @@ public:
     virtual void print() const;
     virtual Phone* clone() const;
 
-protected:
+    void swap(Phone& other) noexcept;
+
+private:
     char* model = nullptr;
     char* brand = nullptr;
     double price = 0.0;
 
-private:
     void copyDyn(const Phone& other);
     void freeDyn();
 };
