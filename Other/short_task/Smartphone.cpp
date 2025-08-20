@@ -23,14 +23,18 @@ Smartphone::Smartphone(const Smartphone& other)
     memory = other.memory;
 }
 
+void Smartphone::swap(Smartphone& other) noexcept {
+    Phone::swap(other);
+    
+    using std::swap;
+    swap(os, other.os);
+    swap(memory, other.memory);
+}
+
 Smartphone& Smartphone::operator=(const Smartphone& other) {
     if (this != &other) {
         Smartphone temp(other);
-        std::swap(model, temp.model);
-        std::swap(brand, temp.brand);
-        std::swap(price, temp.price);
-        std::swap(os, temp.os);
-        std::swap(memory, temp.memory);
+        swap(temp);
     }
     return *this;
 }
@@ -40,7 +44,7 @@ Smartphone::~Smartphone() noexcept {
 }
 
 double Smartphone::getPrice() const {
-    return price + memory;
+    return Phone::getPrice() + memory;
 }
 
 void Smartphone::print() const {
