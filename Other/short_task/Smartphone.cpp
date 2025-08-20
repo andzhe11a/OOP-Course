@@ -18,9 +18,8 @@ Smartphone::Smartphone(const char* model, const char* brand, double price, const
 }
 
 Smartphone::Smartphone(const Smartphone& other)
-    : Phone(other) {
+    : Phone(other), memory(other.memory) {
     copyDynS(other);
-    memory = other.memory;
 }
 
 void Smartphone::swap(Smartphone& other) noexcept {
