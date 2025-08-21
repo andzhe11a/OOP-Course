@@ -4,10 +4,20 @@
 #include "Phone.h"
 
 void Store::copyDynSt(const Store& other) {
-    phones = new Phone*[other.capacity];
+    this->phones = new Phone*[other.capacity];
 
-    for (size_t i = 0; i < other.size; ++i) {
-        phones[i] = other.phones[i]->clone();
+    size_t i = 0;
+    try {
+        for (; i < other.size; ++i) {
+            this->phones[i] = other.phones[i]->clone();
+        }
+    } catch (...) { 
+        for (size_t j = 0; j < i; ++j) {
+            delete this->phones[j];
+        }
+        delete[] this->phones;
+
+        throw;
     }
 }
 
