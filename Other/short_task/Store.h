@@ -10,10 +10,11 @@ public:
 
     bool addPhone(const Phone& phoneToAdd);
     bool removePhone(const char* model, const char* brand);
-
     void printStatus() const;
 
     void sellCheapestSamsung();
+
+    void swap(Store& other) noexcept;
 
 private:
     double initialBudget = 0.0;
@@ -25,6 +26,7 @@ private:
 
     void freeDynSt();
     void copyDynSt(const Store& other);
-
     void resize();
+
+    void removeAt(size_t index);
 };
