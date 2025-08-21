@@ -4,8 +4,9 @@
 #include "Phone.h"
 
 void Store::copyDynSt(const Store& other) {
-    phones = new Phone*[capacity];
-    for (size_t i = 0; i < size; ++i) {
+    phones = new Phone*[other.capacity];
+
+    for (size_t i = 0; i < other.size; ++i) {
         phones[i] = other.phones[i]->clone();
     }
 }
@@ -47,14 +48,19 @@ Store::Store(const Store& other)
     copyDynSt(other);
 }
 
+void Store::swap(Store& other) noexcept {
+    using std::swap;
+    swap(initialBudget, other.initialBudget);
+    swap(currentBudget, other.currentBudget);
+    swap(phones, other.phones);
+    swap(size, other.size);
+    swap(capacity, other.capacity);
+}
+
 Store& Store::operator=(const Store& other) {
     if (this != &other) {
         Store temp(other);
-        std::swap(initialBudget, temp.initialBudget);
-        std::swap(currentBudget, temp.currentBudget);
-        std::swap(phones, temp.phones);
-        std::swap(size, temp.size);
-        std::swap(capacity, temp.capacity);
+        swap(temp);
     }
     return *this;
 }
@@ -66,23 +72,32 @@ Store::~Store() noexcept {
 bool Store::addPhone(const Phone& phoneToAdd) {
     double price = phoneToAdd.getPrice();
 
-    if (currentBudget >= price) {
-        if (size == capacity) {
-            resize();
-        }
-
-        currentBudget -= price;
-        phones[size] = phoneToAdd.clone(); 
-        size++;
-
-        std::cout << "Successfully added: ";
-        phoneToAdd.print();
-        return true;
-    } else {
+    if (currentBudget < price) {
         std::cout << "Not enough budget to add: ";
         phoneToAdd.print();
         return false;
     }
+    if (size == capacity) {
+        resize();
+    }
+    currentBudget -= price;
+    phones[size++] = phoneToAdd.clone();
+
+    std::cout << "Successfully added: ";
+    phoneToAdd.print();
+    return true;
+}
+
+void Store::removeAt(size_t index) {
+    if (index >= size) {
+        throw std::out_of_range("Internal error: removeAt index out of range.");
+    }
+    currentBudget += phones[index]->getPrice();
+    delete phones[index];
+    for (size_t i = index; i < size - 1; ++i) {
+        phones[i] = phones[i + 1];
+    }
+    size--;
 }
 
 bool Store::removePhone(const char* model, const char* brand) {
@@ -90,15 +105,7 @@ bool Store::removePhone(const char* model, const char* brand) {
         if (strcmp(phones[i]->getModel(), model) == 0 && strcmp(phones[i]->getBrand(), brand) == 0) {
             std::cout << "Successfully removed(sold): ";
             phones[i]->print();
-
-            currentBudget += phones[i]->getPrice();
-            delete phones[i];
-
-            for (size_t j = i; j < size - 1; ++j) {
-                phones[j] = phones[j + 1];
-            }
-            size--;
-
+            removeAt(i); 
             return true;
         }
     }
@@ -118,21 +125,25 @@ void Store::printStatus() const {
 }
 
 void Store::sellCheapestSamsung() {
-    Phone* cheapestSamsung = nullptr;
-    double minPrice = -1.0;
+    bool samsungFound = false;
+    size_t cheapestIndex = 0;
+    double minPrice = 0.0;
 
     for (size_t i = 0; i < size; ++i) {
         if (strcmp(phones[i]->getBrand(), "Samsung") == 0) {
             double currentPrice = phones[i]->getPrice();
-            if (cheapestSamsung == nullptr || currentPrice < minPrice) {
+            if (!samsungFound || currentPrice < minPrice) {
+                samsungFound = true;
                 minPrice = currentPrice;
-                cheapestSamsung = phones[i];
+                cheapestIndex = i;
             }
         }
     }
 
-    if (cheapestSamsung != nullptr) {
-        removePhone(cheapestSamsung->getModel(), cheapestSamsung->getBrand());
+    if (samsungFound) {
+        std::cout << "Selling the cheapest Samsung: ";
+        phones[cheapestIndex]->print();
+        removeAt(cheapestIndex); 
     } else {
         std::cout << "No available Samsung phones in the store." << std::endl;
     }
