@@ -66,7 +66,7 @@ Store& Store::operator=(const Store& other) {
 }
 
 Store::~Store() noexcept {
-    free();
+    freeDynSt();
 }
 
 bool Store::addPhone(const Phone& phoneToAdd) {
