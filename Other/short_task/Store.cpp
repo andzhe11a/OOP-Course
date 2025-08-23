@@ -46,6 +46,9 @@ Store::Store(double initialBudget)
       size(0),
       capacity(8)
 {
+    if (initialBudget < 0) {
+        throw std::invalid_argument("Initial budget cannot be negative.");
+    }
     phones = new Phone*[capacity];
 }
 
