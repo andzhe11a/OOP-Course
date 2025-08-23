@@ -3,11 +3,17 @@
 #include "Phone.h"
 
 void Phone::copyDyn(const Phone& other) {
-    model = new char[strlen(other.model) + 1];
-    strcpy(model, other.model);
+    try {
+        brand = new char[strlen(other.brand) + 1];
+        strcpy(brand, other.brand);
 
-    brand = new char[strlen(other.brand) + 1];
-    strcpy(brand, other.brand);
+        model = new char[strlen(other.model) + 1];
+        strcpy(model, other.model);
+    }
+    catch (...) {
+        freeDyn();
+        throw;
+    }
 }
 
 void Phone::freeDyn() {
@@ -16,11 +22,21 @@ void Phone::freeDyn() {
 }
 
 Phone::Phone(const char* model, const char* brand, double price) : price(price) {
-    this->model = new char[strlen(model) + 1];
-    strcpy(this->model, model);
+    if (price < 0) {
+        throw std::invalid_argument("Price cannot be negative.");
+    }
+    
+    try {
+        this->brand = new char[strlen(brand) + 1];
+        strcpy(this->brand, brand);
 
-    this->brand = new char[strlen(brand) + 1];
-    strcpy(this->brand, brand);
+        this->model = new char[strlen(model) + 1];
+        strcpy(this->model, model);
+    }
+    catch (...) {
+        freeDyn();
+        throw;
+    }
 }
 
 Phone::Phone(const Phone& other) : price(other.price) {
